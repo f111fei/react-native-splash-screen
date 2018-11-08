@@ -10,7 +10,7 @@
 #import "RNSplashScreen.h"
 #import <React/RCTBridge.h>
 
-static bool waiting = true;
+//static bool waiting = true;
 static bool addedJsLoadErrorObserver = false;
 
 @implementation RNSplashScreen
@@ -25,16 +25,27 @@ RCT_EXPORT_MODULE(SplashScreen)
         addedJsLoadErrorObserver = true;
     }
 
-    while (waiting) {
-        NSDate* later = [NSDate dateWithTimeIntervalSinceNow:0.1];
-        [[NSRunLoop mainRunLoop] runUntilDate:later];
-    }
+//    while (waiting) {
+//        NSDate* later = [NSDate dateWithTimeIntervalSinceNow:0.1];
+//        [[NSRunLoop mainRunLoop] runUntilDate:later];
+//    }
+    
+    UIView* launchView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:nil options:nil] lastObject];
+    launchView.frame = [UIScreen mainScreen].bounds;
+    
+    [[[UIApplication sharedApplication] keyWindow] addSubview:launchView];
 }
 
 + (void)hide {
     dispatch_async(dispatch_get_main_queue(),
                    ^{
-                       waiting = false;
+//                       waiting = false;
+                       
+                       UIWindow* window = [[UIApplication sharedApplication] keyWindow];
+                       
+                       UIView* sview = [[window subviews] objectAtIndex:0];
+                       
+                       [window bringSubviewToFront:sview];
                    });
 }
 

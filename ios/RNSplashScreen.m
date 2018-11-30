@@ -12,6 +12,7 @@
 
 //static bool waiting = true;
 static bool addedJsLoadErrorObserver = false;
+static UIWindow* window;
 
 @implementation RNSplashScreen
 - (dispatch_queue_t)methodQueue{
@@ -33,7 +34,12 @@ RCT_EXPORT_MODULE(SplashScreen)
     UIView* launchView = [[[NSBundle mainBundle] loadNibNamed:@"LaunchScreen" owner:nil options:nil] lastObject];
     launchView.frame = [UIScreen mainScreen].bounds;
     
-    [[[UIApplication sharedApplication] keyWindow] addSubview:launchView];
+    window = [[UIApplication sharedApplication] keyWindow];
+    
+    [window addSubview:launchView];
+    
+    [window makeKeyAndVisible];
+    
 }
 
 + (void)hide {
@@ -41,11 +47,11 @@ RCT_EXPORT_MODULE(SplashScreen)
                    ^{
 //                       waiting = false;
                        
-                       UIWindow* window = [[UIApplication sharedApplication] keyWindow];
-                       
                        UIView* sview = [[window subviews] objectAtIndex:0];
                        
                        [window bringSubviewToFront:sview];
+                       
+                       [window makeKeyAndVisible];
                    });
 }
 
